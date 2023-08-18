@@ -1,5 +1,5 @@
 (function(global, doc) {
-  var
+  const
     closePopupAfterCopyCheckbox = El.$('#close-popup-after-copy'),
     closePopupAfterCopyText = El.$('#close-popup-after-copy-text'),
     snippetTextInput = El.$('#snippet-text'),
@@ -9,25 +9,24 @@
   ;
 
   chrome.storage.sync.get('copy', function(storage) {
-    var snippets = storage.copy.snippets;
-    for (var i = 0, snippetslen = snippets.length; i < snippetslen; ++i) {
+    const snippets = storage.copy.snippets;
+    for (let i = 0, snippetslen = snippets.length; i < snippetslen; ++i) {
       snippetsList.insertAdjacentHTML('beforeend', getSnippetTemplate(snippets[i]));
     }
 
     closePopupAfterCopyCheckbox.checked = storage.copy.closePopupAfterCopy;
   });
 
-  closePopupAfterCopyCheckbox.addEventListener('click', function(e) {
+  closePopupAfterCopyCheckbox.addEventListener('click', function() {
     Ext.setValue({
       closePopupAfterCopy: this.checked
     });
   });
 
   doc.addEventListener('click', function(e) {
-    var
-      el = e.target,
-      snippetBlock
-    ;
+    const el = e.target;
+    let snippetBlock;
+    let snippetTextarea;
 
     // edit a snippet
     if (el.classList.contains('edit-snippet')) {
@@ -35,12 +34,12 @@
       snippetTextarea = el.parentNode.parentNode.parentNode.querySelector('textarea');
 
       chrome.storage.sync.get('copy', function(storage) {
-        var
+        const
           snippets = storage.copy.snippets,
           snippetId = snippetBlock.dataset.snippetId
         ;
 
-        for (var i = 0, snippetslen = snippets.length; i < snippetslen; ++i) {
+        for (let i = 0, snippetslen = snippets.length; i < snippetslen; ++i) {
           if (snippets[i].id == snippetId) {
             snippetTextarea.value = snippets[i].text;
             break;
@@ -63,13 +62,13 @@
         chrome.storage.sync.get('copy', function(storage) {
           snippetBlock = el.parentNode.parentNode.querySelector('.snippet');
 
-          var
+          const
             snippets = storage.copy.snippets,
             snippetId = snippetBlock.dataset.snippetId,
             snippetBlockParent = snippetBlock.parentNode.parentNode
           ;
 
-          for (var i = 0, snippetslen = snippets.length; i < snippetslen; ++i) {
+          for (let i = 0, snippetslen = snippets.length; i < snippetslen; ++i) {
             if (snippets[i].id == snippetId) {
               snippets.splice(i, 1);
               break;
@@ -92,13 +91,13 @@
 
       if (snippetTextarea.value) {
         chrome.storage.sync.get('copy', function(storage) {
-          var
+          const
             snippets = storage.copy.snippets,
             snippetText = snippetTextarea.value,
             snippetId = snippetBlock.dataset.snippetId
           ;
 
-          for (var i = 0, snippetslen = snippets.length; i < snippetslen; ++i) {
+          for (let i = 0, snippetslen = snippets.length; i < snippetslen; ++i) {
             if (snippets[i].id == snippetId) {
               snippets[i].text = snippetText;
               break;
@@ -137,7 +136,7 @@
   addSnippet.addEventListener('click', function() {
     if (snippetTextInput.value) {
       chrome.storage.sync.get('copy', function(storage) {
-        var newSnippet = {
+        const newSnippet = {
           id: Ext.uniqId(),
           text: snippetTextInput.value
         };

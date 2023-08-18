@@ -3,7 +3,7 @@
  *
  * @type {{$: El.$, $$: El.$$, show: El.show, hide: El.hide}}
  */
-var El = {
+const El = {
   $: function(el) {
     return document.querySelector(el);
   },
@@ -37,7 +37,7 @@ var El = {
   text: function(el, text) {
     // array of objects
     if (el instanceof NodeList) {
-      for (var i = 0, len = el.length; i < len; ++i) {
+      for (let i = 0, len = el.length; i < len; ++i) {
         el[i].textContent = text;
       }
     }
@@ -62,7 +62,7 @@ var El = {
   html: function(el, html) {
     // array of objects
     if (el instanceof NodeList) {
-      for (var i = 0, len = el.length; i < len; ++i) {
+      for (let i = 0, len = el.length; i < len; ++i) {
         el[i].innerHTML = html;
       }
     }
@@ -84,7 +84,7 @@ var El = {
  *
  * @type {{sendMessage: Ext.sendMessage, setValue: Ext.setValue, __: Ext.__, play: Ext.play}}
  */
-var Ext = {
+const Ext = {
   /**
    * Dispatches params to popup.js
    *
@@ -116,7 +116,7 @@ var Ext = {
         storage.copy = {};
       }
 
-      for (var prop in data) {
+      for (const prop in data) {
         storage.copy[prop] = data[prop];
       }
 
@@ -146,11 +146,11 @@ var Ext = {
    * @param soundNumber
    */
   play: function(soundNumber) {
-    var soundExt = '.mp3';
+    let soundExt = '.mp3';
     if (/OPR/g.test(navigator.userAgent)) { // for Opera browser
       soundExt = '.ogg';
     }
-    var audio = new Audio('sounds/' + soundNumber + soundExt);
+    let audio = new Audio('sounds/' + soundNumber + soundExt);
     audio.play();
   },
 

@@ -1,6 +1,6 @@
 (function(global, doc) {
   function showInfo() {
-    var
+    const
       mainifest = chrome.runtime.getManifest(),
       width = '340px',
       height = '200px',
@@ -45,7 +45,7 @@
         'text-decoration: none;'
     ;
 
-    var infoWrapper =
+    const infoWrapper =
       '<div id="copy-info" style="' + infoWrapperStyle + '">' +
       '<img src="' + chrome.runtime.getURL('img/icon48.png') + '" alt="">' +
       '<h1 style="' + headerStyle + '">Copy</h1>' +
@@ -57,7 +57,7 @@
     doc.body.insertAdjacentHTML('beforeend', infoWrapper);
 
     doc.addEventListener('click', function() {
-      var el = doc.getElementById('copy-info');
+      const el = doc.getElementById('copy-info');
 
       if (el) {
         el.parentNode.removeChild(el);
@@ -65,7 +65,7 @@
     });
   }
 
-  chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
+  chrome.runtime.onMessage.addListener(function(request) {
     if (request.action == 'showInfo') {
       if (!doc.getElementById('copy-info')) { // if element not rendered yet
         showInfo();
