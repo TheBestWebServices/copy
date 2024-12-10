@@ -1,9 +1,7 @@
 /**
  * HTML Element manipulations
- *
- * @type {{$: El.$, $$: El.$$, show: El.show, hide: El.hide}}
  */
-const El = {
+export const El = {
   $: function(el) {
     return document.querySelector(el);
   },
@@ -13,7 +11,7 @@ const El = {
   },
 
   show: function(el, type) {
-    if (typeof el == 'string') {
+    if (typeof el === 'string') {
       this.$(el).style.display = type || 'block';
     } else {
       el.style.display = type || 'block';
@@ -21,7 +19,7 @@ const El = {
   },
 
   hide: function(el) {
-    if (typeof el == 'string') {
+    if (typeof el === 'string') {
       this.$(el).style.display = 'none';
     } else {
       el.style.display = 'none';
@@ -81,10 +79,8 @@ const El = {
 
 /**
  * Extension methods
- *
- * @type {{sendMessage: Ext.sendMessage, setValue: Ext.setValue, __: Ext.__, play: Ext.play}}
  */
-const Ext = {
+export const Ext = {
   /**
    * Dispatches params to popup.js
    *
@@ -95,9 +91,7 @@ const Ext = {
       throw new Error('Message must be an object');
     }
 
-    chrome.runtime.sendMessage(message, function(response) {
-
-    });
+    chrome.runtime.sendMessage(message);
   },
 
   /**
@@ -111,8 +105,8 @@ const Ext = {
       throw new Error('Data must be an object');
     }
 
-    chrome.storage.sync.get('copy', function(storage) {
-      if (typeof storage.copy == 'undefined') {
+    chrome.storage.sync.get('copy', (storage) => {
+      if (typeof storage.copy === 'undefined') {
         storage.copy = {};
       }
 
@@ -120,9 +114,7 @@ const Ext = {
         storage.copy[prop] = data[prop];
       }
 
-      chrome.storage.sync.set({
-        copy: storage.copy
-      }, function() {
+      chrome.storage.sync.set({ copy: storage.copy }, () => {
         if (callback) {
           callback();
         }
@@ -160,18 +152,7 @@ const Ext = {
    * @returns {string}
    */
   uniqId: function() {
-    return Math.random().toString(36).substr(2);
-  },
-
-  /**
-   * Copy selected text to the clipboard
-   */
-  copy: function() {
-    try {
-      document.execCommand('copy');  // Security exception may be thrown by some browsers.
-    } catch (e) {
-      console.warn('Copy to clipboard failed.', e);
-    }
+    return Math.random().toString(36).substring(2);
   },
 
   /**
@@ -186,6 +167,6 @@ const Ext = {
       return text;
     }
 
-    return text.substr(0, length) + (withoutEllipsis ? '' : '...');
+    return text.substring(0, length) + (withoutEllipsis ? '' : '...');
   }
 };

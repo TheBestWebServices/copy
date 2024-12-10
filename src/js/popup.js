@@ -1,66 +1,64 @@
-(function(global, doc) {
+import { El, Ext } from './lib.js';
+
+const
+  headerText = El.$('#header-text'),
+  textList = El.$('.text-list tbody'),
+  copiedText = El.$('#copied-text')
+;
+
+let closePopupAfterCopy;
+
+chrome.storage.sync.get('copy', (storage) => {
   const
-    headerText = El.$('#header-text'),
-    textList = El.$('.text-list tbody'),
-    copiedText = El.$('#copied-text')
+    snippets = storage.copy.snippets,
+    snippetslen = snippets.length
   ;
 
-  let closePopupAfterCopy;
+  closePopupAfterCopy = storage.copy.closePopupAfterCopy;
 
-  chrome.storage.sync.get('copy', function(storage) {
-    const
-      snippets = storage.copy.snippets,
-      snippetslen = snippets.length
-    ;
+  if (snippetslen) {
+    for (let i = 0; i < snippetslen; ++i) {
+      textList.insertAdjacentHTML('beforeend', '<tr><td class="item" data-snippet-id="' + snippets[i].id + '">' + snippets[i].text + '</td></tr>');
+    }
+  } else {
+    textList.insertAdjacentHTML('beforeend', '<tr><td class="text-center">' + Ext.__('no_data_text') + '</td></tr>');
+  }
+});
 
-    closePopupAfterCopy = storage.copy.closePopupAfterCopy;
+document.addEventListener('click', (e) => {
+  const el = e.target;
 
-    if (snippetslen) {
-      for (let i = 0; i < snippetslen; ++i) {
-        textList.insertAdjacentHTML('beforeend', '<tr><td class="item" data-snippet-id="' + snippets[i].id + '">' + snippets[i].text + '</td></tr>');
+  if (el.classList.contains('item')) {
+    chrome.storage.sync.get('copy', (storage) => {
+      const
+        snippets = storage.copy.snippets,
+        snippetId = el.dataset.snippetId
+      ;
+
+      for (let i = 0, snippetslen = snippets.length; i < snippetslen; ++i) {
+        if (snippets[i].id === snippetId) {
+          El.text(copiedText, snippets[i].text);
+          break;
+        }
       }
-    } else {
-      textList.insertAdjacentHTML('beforeend', '<tr><td class="text-center">' + Ext.__('no_data_text') + '</td></tr>');
-    }
-  });
 
-  doc.addEventListener('click', function(e) {
-    const el = e.target;
+      copiedText.select();
+      navigator.clipboard.writeText(copiedText.value);
 
-    if (el.classList.contains('item')) {
-      chrome.storage.sync.get('copy', function(storage) {
-        const
-          snippets = storage.copy.snippets,
-          snippetId = el.dataset.snippetId
-        ;
+      if (closePopupAfterCopy) {
+        window.close();
+      }
+    });
+  }
 
-        for (let i = 0, snippetslen = snippets.length; i < snippetslen; ++i) {
-          if (snippets[i].id == snippetId) {
-            El.text(copiedText, snippets[i].text);
-            break;
-          }
-        }
+  if (el.classList.contains('info-btn') || el.parentNode.classList.contains('info-btn')) {
+    chrome.tabs.query({ active: true, currentWindow: true }, (arrayOfTabs) => {
+      chrome.tabs.sendMessage(arrayOfTabs[0].id, { action: 'showInfo' });
+    });
+  }
+});
 
-        copiedText.select();
-        Ext.copy();
-
-        if (closePopupAfterCopy) {
-          global.close();
-        }
-      });
-    }
-
-    if (el.classList.contains('info-btn') || el.parentNode.classList.contains('info-btn')) {
-      chrome.tabs.query({active: true, currentWindow: true}, function(arrayOfTabs) {
-        chrome.tabs.sendMessage(arrayOfTabs[0].id, { action: 'showInfo' }, function(response) {
-
-        });
-      });
-    }
-  });
-
-  /**
-   * Populate translations
-   */
-  El.text(headerText, Ext.__('header_text'));
-})(window, document);
+/**
+ * Populate translations
+ */
+El.text(headerText, Ext.__('header_text'));

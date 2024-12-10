@@ -32,8 +32,10 @@
         'color: #000;' +
         'font-size: 14px;' +
         'margin-bottom: 10px;' +
+        'margin-top: 0;' +
         'background: #f3f3f3;' +
-        'text-align: center;',
+        'text-align: center;' +
+        'line-height: 16px;',
       poweredStyle =
         'color: #000;' +
         'font-size: 11px;' +
@@ -56,7 +58,7 @@
 
     doc.body.insertAdjacentHTML('beforeend', infoWrapper);
 
-    doc.addEventListener('click', function() {
+    doc.addEventListener('click', () => {
       const el = doc.getElementById('copy-info');
 
       if (el) {
@@ -65,8 +67,8 @@
     });
   }
 
-  chrome.runtime.onMessage.addListener(function(request) {
-    if (request.action == 'showInfo') {
+  chrome.runtime.onMessage.addListener((request) => {
+    if (request.action === 'showInfo') {
       if (!doc.getElementById('copy-info')) { // if element not rendered yet
         showInfo();
       }

@@ -1,26 +1,17 @@
 {
   "name": "copy",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "description": "Quick copying of ready text snippets to the clipboard",
-  "main": "index.js",
   "scripts": {
     "build": "gulp",
     "watch": "gulp watch"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mountpoint/copy.git"
-  },
-  "author": "mountpoint",
+  "type": "module",
+  "author": "The Best Web Services <thebestwebservices@gmail.com>",
   "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/mountpoint/copy/issues"
-  },
-  "homepage": "https://github.com/mountpoint/copy#readme",
   "devDependencies": {
-    "del": "^6.1.1",
-    "gulp": "^4.0.2",
-    "gulp-debug": "^4.0.0",
-    "require-dir": "^1.2.0"
+    "del": "^8.0.0",
+    "gulp": "^5.0.0",
+    "gulp-debug": "^5.0.1"
   }
 }

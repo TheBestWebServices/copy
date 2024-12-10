@@ -1,16 +1,15 @@
 {
-  "manifest_version": 2,
-
+  "manifest_version": 3,
   "name": "__MSG_ext_name__",
   "description": "__MSG_ext_description__",
   "default_locale": "en",
-  "version": "0.2.1",
+  "version": "1.0.0",
   "permissions": [
     "storage",
     "tabs",
     "activeTab"
   ],
-  "browser_action": {
+  "action": {
     "default_title": "__MSG_ext_name__",
     "default_popup": "popup.html"
   },
@@ -22,23 +21,28 @@
     "128": "img/icon128.png"
   },
   "web_accessible_resources": [
-    "img/icon48.png"
+    {
+      "resources": [
+        "img/icon48.png",
+        "img/icon128.png"
+      ],
+      "matches": [
+        "*://*/*"
+      ]
+    }
   ],
   "content_scripts": [
     {
-      "matches": [
-        "<all_urls>"
-      ],
       "js": [
         "js/copy.js"
+      ],
+      "matches": [
+        "<all_urls>"
       ]
     }
   ],
   "background": {
-    "scripts": [
-      "js/lib.js",
-      "js/background.js"
-    ],
-    "persistent": false
+    "service_worker": "js/background.js",
+    "type": "module"
   }
 }
