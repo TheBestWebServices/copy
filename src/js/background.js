@@ -2,7 +2,7 @@ import { Ext } from './lib.js';
 
 /**
  * Handle click on icon
- * "popup" not works with an onclick event.
+ * "popup" doesn't work with an onclick event.
  * Remove the popup.html from the manifest file. And keep the background page, and it will work.
  */
 chrome.action.onClicked.addListener(() => {
