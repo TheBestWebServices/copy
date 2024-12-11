@@ -129,7 +129,7 @@ export const Ext = {
    * @returns {string}
    */
   __: function(key) {
-    return chrome.i18n.getMessage(key)
+    return chrome.i18n.getMessage(key);
   },
 
   /**
